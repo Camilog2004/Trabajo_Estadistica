@@ -1,0 +1,6 @@
+"0","rownames(betas1) <- c(""$\\beta_0$"",""$\\beta_1$"",""$\\beta_2$"",""$\\beta_3$"",""$\\beta_4$"",""$\\beta_5$"")
+betas1 %>% 
+  kable(col.names = c(""Valor del parametro""),caption=""Valores coeficientes"", escape = F, booktab = T, align = ""c"", row.names = T) %>% 
+  kable_styling(latex_options = c(""HOLD_position""))
+"
+"0",""

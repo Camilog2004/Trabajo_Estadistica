@@ -1,0 +1,202 @@
+---
+header-includes:
+- \usepackage{longtable}
+- \usepackage[utf8]{inputenc}
+- \usepackage[spanish]{babel}\decimalpoint
+- \setlength{\parindent}{0cm}
+- \usepackage{amsmath}
+- \usepackage{array}
+- \usepackage{float}
+- \usepackage{multirow}
+output:
+  pdf_document:
+    number_sections: yes
+  word_document: default
+fontsize: 12pt
+papersize: letter
+geometry: margin = 1in
+language: es
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, fig.align = "center", fig.pos = "H")
+library(kableExtra)
+library(knitr)
+library(leaps)
+source("Functions.R")
+library(tidyverse)
+```
+
+```{=tex}
+\input{titlepage}
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\thispagestyle{empty}
+\listoffigures
+\listoftables
+\newpage
+```
+
+```{=tex}
+\pagestyle{myheadings}
+\setcounter{page}{3}
+```
+\section{Pregunta 1}
+Se toma la base de datos 8, en la cual hay 5 variables regresoras, denominadas como:
+
+$Y$: Riesgo de infección 
+
+$X_1$: Duración de la estadía
+
+$X_2$: Rutina de cultivos
+
+$X_3$: Número de camas
+
+$X_4$: Censo promedio diario
+
+$X_5$: Número de enfermeras
+
+A partir de ello se plantea el siguiente modelo incial:
+
+$$
+Y_i=\beta_0 + \beta_1 X_{1i} +\beta_2 X_{2i} + \beta_3 X_{3i} +\beta_4 X_{4i} + \beta_5 X_{5i} + \varepsilon_i; \ \varepsilon_i 
+\stackrel{iid}{\sim}N(0,\sigma^2); \ 1 \leq i \leq 65
+$$
+```{r}
+datos <- read.table("Equipo08.txt", header = T)
+modelo <- lm(Y~.,data=datos)
+betas <- round(coef(modelo),4)
+betas1 <- as.data.frame(betas)
+```
+
+\subsection{Modelo de regresion}
+
+Al realizar el ajuste al modelo con el fin de obtener la relacion de la variable respuesta con las variables regresoras obtenemos los siguientes coeficientes respectivamente:
+
+```{r}
+rownames(betas1) <- c("$\\beta_0$","$\\beta_1$","$\\beta_2$","$\\beta_3$","$\\beta_4$","$\\beta_5$")
+betas1 %>% 
+  kable(col.names = c("Valor del parametro"),caption="Valores coeficientes", escape = F, booktab = T, align = "c", row.names = T) %>% 
+  kable_styling(latex_options = c("HOLD_position"))
+```
+La ecuacion de la regresion ajustada es:
+$$
+\hat{Y}_i=  `r betas[1]` + `r betas[2]` X_{1i} +`r betas[3]` X_{2i} + `r betas[4]` X_{3i} +`r betas[5]` X_{4i} + `r betas[6]`X_{5i}; \ 1 \leq i \leq 65 
+$$
+\subsection{Significancia de la regresión}
+Se realizara un análisis de varianza para probar la significancia de los parametros, el cual se establece con el siguiente juego de hipotesis:
+$$
+\begin{cases}
+  \begin{aligned}
+    H_0&: \beta_1=\beta_2=\beta_3=\beta_4=\beta_5=0 \\
+    H_a&: \text{Algún }\beta_j \text{ distinto de 0 para j=1, 2,..., 5}
+  \end{aligned}
+\end{cases}
+$$
+Cuyo estadístico de prueba es:
+
+\begin{equation}
+F_0 = \frac{MST}{MSE} \stackrel{H_0}{\sim} f_{5, `r nrow(datos)-6`}\\
+\end{equation}
+
+Se hace la comparacion con la distribucion $f$ debido a que $F_0$ es un analisis de significancia globlal del modelo, o sea, que tanto cambia el modelo segun las variables regresoras, la distribucion $f$ es un analisis de varianza segun la cantidad de parametros y datos, si $f \leq F_0$ significa que el modelo tiene una varianza mayor, por lo que, tiene alguna relacion con al menos una de las variables regresoras.      
+
+Ahora, se presenta la tabla Anova:
+```{r}
+tabla.anova <- myAnova(modelo)
+rownames(tabla.anova) <- c("Regresión", "Error")
+tabla.anova %>% 
+  kable(col.names = c("Sumas de cuadrados", "Grados de libertad", "Cuadrado medio", "$F_0$", "P-valor"),caption = "Tabla  ANOVA para el modelo", escape=F, booktab=T, align = "c", row.names = T) %>% 
+  kable_styling(latex_options = c("HOLD_position"))
+```
+De la tabla Anova, se observa un valor P casi igual a 0, lo  que permite rechazar la hipótesis nula en la que $\beta_j = 0$ con $1 \leqslant j \leqslant 5$, aceptando la hipótesis alternativa en la que algún $\beta_j \neq 0$, esto nos dice que hay al menos una relacion entre las variable respuesta y las regresoras permitiendonos asi concluir la significancia del modelo.
+
+\subsection{Significancia  de los parámetros}
+Antes se realizo una prueba general del modelo con el fin de saber si nos proporcionaba alguna informacion, ahora se realizara una prueba de hipotesis sobre los coeficientes individuales del modelo con el fin de saber cuales son significativos o no, se establece primero el juego de hipotesis:
+$$
+\begin{cases}
+  \begin{aligned}
+    H_0&: \beta_j=0 \\
+    H_a&: \beta_j \neq 0 \ j=1, 2,..., 5
+  \end{aligned}
+\end{cases}
+$$
+El estadistico es el siguiente:
+
+\begin{equation}
+T_{j,0} = \frac{\hat{\beta}_j}{se(\hat{\beta}_j)} \stackrel{H_0}{\sim} t_{`r nrow(datos)-6`}\\
+\end{equation}
+
+
+En el siguiente cuadro se presenta información de los parámetros:
+
+
+```{r}
+tabla.coeficientes <- summary(modelo)$coefficients
+rownames(tabla.coeficientes) <- paste("$\\beta_", 0:5, "$", sep = "")
+tabla.coeficientes %>% 
+  kable(col.names = c("$\\hat{\\beta_j}$", "$se(\\hat{\\beta_j})$", "$T_{0j}$", "P-valor"),caption = "Resumen de los coeficientes", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
+  kable_styling(latex_options = c("HOLD_position"))
+```
+Usando el criterio de rechazo del valor-P $\alpha > Val-P$ determinaremos que valores son significativos y cuales no, dado que no nos dan un valor especifico para $\alpha$ diremos que $\alpha = 0.05$ viendo la tabla solo hay dos valores significativos, o sea, que rechazamos su hipotesis nula que son $\beta_3$ y $\beta_5$ ya que sus P-valores son menores que $\alpha$.
+
+\subsection{Interpretación de los parámetros}
+
+\textbf{$\hat{\beta_3}$:} Significa que por cada unidad que aumente $X_{3}$ la variable respuesta estimada $\hat{Y}_i$ aumenta en 0.0628 unidades, esto en otras palabras es que a medida que hayan mas camas mas aumenta la riesgo de infeccion.
+
+\textbf{$\hat{\beta_5}$:} Significa que por cada unidad que aumente $X_{5}$ la variable respuesta estimada $\hat{Y}_i$ aumenta en 0.0024 unidades, aqui nos dice que segun el aumento de la cantidad de enfermeras aumenta el riesgo de infeccion.
+
+\subsection{Coeficiente de determinación múltiple $R^2$}
+
+
+El  modelo tiene un coeficiente de determinación múltiple $R^2 = 0.4947$, lo que significa que aproximadamente el $49.47\%$ esto nos dice la variabilidad del modelo, esto nos dice que tanto varia la variable dependiente esto se explica por las variables independientes del modelo el resto de la variabilidad es explicada por la variabilidad residual, o sea,$1-R^2$.
+
+\newpage
+\section{Pregunta 2}
+\subsection{Planteamiento pruebas de hipótesis  y modelo reducido}
+
+Según el Cuadro 3, las covariables que tienen el valor-P más alto en el modelo son $X_1, X_2, X_4$. 
+Por medio de la tabla de todas las regresiones posibles se quiere hacer la siguiente prueba de hipótesis que permita concluir si el subconjunto de variables es significativo:
+
+
+$$
+\begin{cases}
+\begin{aligned}
+\text{H}_0&: \beta_1 =\beta_2 = \beta_4 = 0\\
+\text{H}_1&: \text{Algún } \beta_j \text{ distinto de 0 para } j=1, 2, 4
+\end{aligned}
+\end{cases}
+$$
+```{r}
+todas.regresiones <- myAllRegTable(modelo)
+todas.regresiones <- todas.regresiones[c(31, 6), c(4, 6)]
+row.names(todas.regresiones) <- c("Modelo  completo", "Modelo reducido")
+todas.regresiones %>% 
+    kable(col.names = c("Suma cuadratica de error", "Covariables en el modelo"), caption = "Resumen tabla de todas las regresiones posibles", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
+  kable_styling(latex_options = c("HOLD_position"))
+```
+Un modelo reducido para la prueba de significancia del subconjunto es:
+
+$$Y_i = \beta_0 + \beta_3 X_{3i} + \beta_5 X_{5i} + \varepsilon; \ \varepsilon_i \stackrel{\text{iid}}{\sim} N(0, \sigma^2); \ 1 \leqslant i \leqslant 65$$
+\subsection{Estadístico de prueba y conclusión}
+Se construye el estadístico de prueba:
+
+\begin{equation}
+\begin{split}
+F_0 &= \frac{(SSE(\beta_0, \beta_3, \beta_5) - SSE(\beta_0, \ \cdots, \ \beta_5))/3}{MSE(\beta_0, \ \cdots, \ \beta_5)} \stackrel{H_0}{\sim} f_{3, `r nrow(datos)-6`}\\
+&= \frac{[69.028-58.420]/3}{0.990177} \\
+&= 3.5711
+\end{split}
+\end{equation}
+
+Si se compara el $F_0$ con $f_{0.95, 3, `r nrow(datos)-6`} = `r round(qf(0.95, 3, nrow(datos)-6), 4)`$, se puede ver que $F_0 > f_{0.95, 3, 59}$.
+
+Usando $\alpha = 0.05$:
+
+Como $F_0 > f_{0.95, 3, 59}$, entonces se rechaza $H_0$, por lo tanto, el subconjunto es significativo.
+
+Por lo anterior, llegamos a la conclusión que las variables no se pueden descartar del modelo porque el riesgo promedio de infección depende de al menos una de las variables presentes en el subconjunto.
