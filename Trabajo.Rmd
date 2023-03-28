@@ -200,3 +200,75 @@ Usando $\alpha = 0.05$:
 Como $F_0 > f_{0.95, 3, 59}$, entonces se rechaza $H_0$, por lo tanto, el subconjunto es significativo, en presencia de los demás parámetros.
 
 Por lo anterior, llegamos a la conclusión que las variables no se pueden descartar del modelo porque el riesgo promedio de infección depende de al menos una de las variables presentes en el subconjunto.
+
+\newpage
+\section{Pregunta 3}
+\subsection{Prueba de hipótesis y prueba de hipótesis matricial}
+Queremos probar si: 
+$$2\beta_1 = \beta_2; \ 5\beta_3  = \beta_4; \ \beta_4  = \beta_5 $$
+Para esto tenemos la siguiente prueba de hipótesis:
+
+$$
+\begin{cases}
+\begin{aligned}
+\text{H}_0&: 2\beta_1 = \beta_2; \ 5\beta_3  = \beta_4; \ \beta_4  = \beta_5 \\
+\text{H}_1&: 2\beta_1 \neq \beta_2  \ ó\ 5\beta_3 \neq \beta_4 \ ó\ \beta_4 \neq \beta_5
+\end{aligned}
+\end{cases}
+$$
+Podemos reescribirlas de la siguiente manera:
+
+$$
+\begin{cases}
+\begin{aligned}
+\text{H}_0&: 2\beta_1 - \beta_2 = 0; \ 5\beta_3  - \beta_4 = 0; \ \beta_4  - \beta_5 = 0 \\
+\text{H}_1&: 2\beta_1 - \beta_2 \neq 0; \ 5\beta_3  - \beta_4 \neq 0; \ \beta_4  - \beta_5 \neq 0
+\end{aligned}
+\end{cases}
+$$
+
+Y ahora en términos matriciales:
+$$
+\begin{cases}
+\begin{aligned}
+\text{H}_0&: \mathbf{L} \underline{\mathbf{\beta}} = \underline{\mathbf{0}} \\
+\text{H}_1&: \mathbf{L} \underline{\mathbf{\beta}} \neq \underline{\mathbf{0}} \\
+\end{aligned}
+\end{cases}
+$$
+
+Donde la matriz $\mathbf{L}$ está dada por:
+$$
+L = \begin{bmatrix}
+  0 & 2 & -1 & 0 & 0 & 0\\
+  0 & 0 & 0 & 5 & -1 & 0\\
+  0 & 0 & 0 & 0 & 1 & -1
+\end{bmatrix}
+$$  
+Para obtener el modelo reducido operamos:
+$$Y_i = \beta_0  + \beta_1 X_{1i} + 2\beta_1 X_{2i} + \beta_3 X_{3i} + 5\beta_3 X_{4i} + 5\beta_3 X_{5i}+\varepsilon_i, \ \varepsilon_i \stackrel{\text{iid}}{\sim} N(0, \sigma^2); \ 1 \leqslant i \leqslant 65$$
+
+Agrupando, el MR estará dado por: 
+$$Y_i = \beta_0  + \beta_1 X^*_{1,2i}+ \beta_3 X^*_{3,4,5i} +\varepsilon_i, \ \varepsilon_i \stackrel{\text{iid}}{\sim} N(0, \sigma^2); \ 1 \leqslant i \leqslant 65$$
+
+Donde $X^*_{1,2i} = X_{1i} + 2X_{2i}$ y $X^*_{3,4,5i} = X_{3i} + 5X_{4i}+ 5X_{5i}$
+
+\subsection{Estadístico de prueba}
+
+El estadístico de prueba $F_0$ es el siguiente:
+
+\begin{equation}
+F_0 = \frac{(SSE(MR) - SSE(MF))/3}{MSE(MF)} \stackrel{H_0}{\sim} f_{3, `r nrow(datos)-6`}\\
+\end{equation}
+
+Reemplazando el $SSE(MF)\ y \ el \ MSE(MF)$ conocidos:
+
+\begin{equation}
+F_0 = \frac{(SSE(MR) - 58.420)/3}{0.990177} \stackrel{H_0}{\sim} f_{3, `r nrow(datos)-6`}\\
+\end{equation}
+
+\newpage
+\section{Pregunta 4}
+\subsection{Supuestos del modelo}
+
+\subsubsection{Normalidad de los residuales}
