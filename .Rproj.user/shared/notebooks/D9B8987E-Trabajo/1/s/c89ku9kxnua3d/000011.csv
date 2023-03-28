@@ -1,7 +1,0 @@
-"0","tabla.anova <- myAnova(modelo)
-rownames(tabla.anova) <- c(""Regresión"", ""Error"")
-tabla.anova %>% 
-  kable(col.names = c(""Sumas de cuadrados"", ""Grados de libertad"", ""Cuadrado medio"", ""$F_0$"", ""P-valor""),caption = ""Tabla  ANOVA para el modelo"", escape=F, booktab=T, align = ""c"", row.names = T) %>% 
-  kable_styling(latex_options = c(""HOLD_position""))
-"
-"0",""

@@ -1,8 +1,0 @@
-"0","todas.regresiones <- myAllRegTable(modelo)
-todas.regresiones <- todas.regresiones[c(31, 6), c(4, 6)]
-row.names(todas.regresiones) <- c(""Modelo  completo"", ""Modelo reducido"")
-todas.regresiones %>% 
-    kable(col.names = c(""Suma cuadratica de error"", ""Covariables en el modelo""), caption = ""Resumen tabla de todas las regresiones posibles"", escape=F, booktab=T, align = ""c"", row.names = T, digits = 4) %>% 
-  kable_styling(latex_options = c(""HOLD_position""))
-"
-"0",""
