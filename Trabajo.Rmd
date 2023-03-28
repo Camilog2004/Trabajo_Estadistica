@@ -272,3 +272,98 @@ F_0 = \frac{(SSE(MR) - 58.420)/3}{0.990177} \stackrel{H_0}{\sim} f_{3, `r nrow(d
 \subsection{Supuestos del modelo}
 
 \subsubsection{Normalidad de los residuales}
+
+Para validar el supuesto de normalidad, se plante la prueba de hipótesis Shapiro-Wilk, seguida de un gráfico cuantil-cuantil:
+$$
+\begin{cases}
+\begin{aligned}
+  \text{H}_0&: \varepsilon_i \sim \text{Normal}\\
+  \text{H}_1&: \varepsilon_i \nsim \text{Normal}
+\end{aligned}
+\end{cases}
+$$
+```{r fig.cap = "Gráfico cuantil-cuantil y normalidad de residuales"} 
+myQQnorm(modelo, xlab = "Cuantiles teóricos",
+         ylab = "Cuantiles muestrales", pch=20)
+```
+
+Analizando en un principio el valor-P de la prueba Shapiro-Wilk utilizando un nivel de significancia $\alpha = 0.05$, podemos observar que este valor-P es superior pues $0.9591 > 0.05$, por lo que no se cumple el criterio de rechazo, no rechazaríamos la hipótesis nula y se cumpliría el supuesto de normalidad. No obstante, en la gráfica de cuantiles...
+
+\subsubsection{Varianza constante}
+
+Para validar el supuesto de varianza constante analizaremos el gráfico de los residuales estudentizados vs los valores ajustados:
+
+```{r fig.cap = "Gráfico residuales estudentizados vs valores ajustados"}
+res.stud <- round(rstandard(modelo), 4)
+yhat <- round(modelo$fitted.values, 4)
+plot(yhat, res.stud, xlab = "Valores Ajustados", 
+     ylab = "Residuales Estudentizados", main = "Residuales Estudentizados vs Valores Ajustados", pch=20)
+abline(h = 0, lty = 2, lwd = 2, col = 2)
+```
+
+Interpretación...
+
+\subsection{Verificación de las observaciones}
+
+```{r}
+Cooks.D <- round(cooks.distance(modelo), 4)
+hii.value <- round(hatvalues(modelo), 4)
+Dffits <- round(dffits(modelo), 4)
+base.diagnostico <- data.frame(res.stud, Cooks.D, hii.value, Dffits)
+```
+
+\subsubsection{Datos atípicos}
+
+```{r fig.cap = "Identificación de datos atípicos"}
+with(base.diagnostico,
+     plot(res.stud, xlab="Observación", ylab = "Residuales",
+          main = "Residuales estudentizados", pch = 20, ylim=c(-5, 5)))
+abline(h = 3, col="red", lty = "dashed")
+abline(h =- 3, col="red", lty = "dashed")
+```
+
+```{r include = F}
+atipicos.criterio <- 3
+base.diagnostico[base.diagnostico$res.stud > atipicos.criterio | base.diagnostico$res.stud < -atipicos.criterio, ]
+```
+Tal como nos los muestra la gráfica anterior, no se observa ningún dato atípico en el conjunto de datos que tenemos, esto porque ningún residual estudentizado sobrepasa el criterio correspondiente $|r_{estud}| > 3$.
+
+\subsubsection{Puntos de balanceo}
+
+```{r fig.cap = "Identificación de puntos de balanceo"}
+hii.criterio <- 2*(6/(nrow(datos)))
+with(base.diagnostico,
+     plot(hii.value, xlab="Observación", ylab = "Valor hii",
+          main = "Gráfica de hii para las observaciones", pch = 20, ylim=c(-0.3, 0.3)))
+abline(h = hii.criterio, col="red", lty = "dashed")
+```
+```{r include = F}
+base.diagnostico[base.diagnostico$hii.value > hii.criterio, ]
+```
+
+Interpreación...
+
+\subsubsection{Puntos  influenciales}
+
+```{r fig.cap="Criterio distancias de Cook para puntos influenciales"}
+criterio.cook <- 1
+with(base.diagnostico,
+     plot(Cooks.D, xlab="Observación", ylab = "Distancia de Cook",
+          main = "Gráfica de distancias de Cook", pch = 20, ylim=c(-1.5, 1.5)))
+abline(h = criterio.cook, col="red", lty = "dashed")
+#base.diagnostico[base.diagnostico$Cooks.D > criterio.cook, ]
+```
+
+```{r fig.cap="Criterio Dffits para puntos influenciales"}
+Dffits.criterio <- 2* (6/nrow(datos))^(1/2)
+with(base.diagnostico,
+     plot(Dffits, xlab="Observación", ylab = "Dffit",
+          main = "Gráfica de observaciones vs Dffits", pch = 20, ylim=c(-1.5, 1.5)))
+abline(h = Dffits.criterio, col="red", lty = "dashed")
+abline(h = -Dffits.criterio, col="red", lty = "dashed")
+base.diagnostico[base.diagnostico$Dffits > Dffits.criterio | base.diagnostico$Dffits < -Dffits.criterio, ]
+```
+
+Interpretación...
+
+\subsection{Conclusión}
