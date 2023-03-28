@@ -197,6 +197,6 @@ Si se compara el $F_0$ con $f_{0.95, 3, `r nrow(datos)-6`} = `r round(qf(0.95, 3
 
 Usando $\alpha = 0.05$:
 
-Como $F_0 > f_{0.95, 3, 59}$, entonces se rechaza $H_0$, por lo tanto, el subconjunto es significativo.
+Como $F_0 > f_{0.95, 3, 59}$, entonces se rechaza $H_0$, por lo tanto, el subconjunto es significativo, en presencia de los demás parámetros.
 
 Por lo anterior, llegamos a la conclusión que las variables no se pueden descartar del modelo porque el riesgo promedio de infección depende de al menos una de las variables presentes en el subconjunto.
