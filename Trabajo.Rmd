@@ -350,7 +350,7 @@ tabla <- base.diagnostico[c(1,24,28,34,38),c(3,1)]
 tabla<-select(tabla,-res.stud)
 rownames(tabla) <- c("1","24","28","34","38")
 tabla %>% 
-  kable(col.names = c("Valores $h_{ii}$"),caption = "Puntos de equilibrio", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
+  kable(col.names = c("Valores $h_{ii}$"),caption = "Puntos de balanceo", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
   kable_styling(latex_options = c("HOLD_position"))
 ```
 
