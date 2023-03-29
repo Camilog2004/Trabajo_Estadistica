@@ -346,11 +346,10 @@ with(base.diagnostico,
           main = "Gráfica de hii para las observaciones", pch = 20, ylim=c(-0.3, 0.5)))
 abline(h = hii.criterio, col="red", lty = "dashed")
 
-tabla <- base.diagnostico[base.diagnostico$hii.value > hii.criterio, ]
-
+tabla <- base.diagnostico[c(1,24,28,34,38),c(1,3)]
 rownames(tabla) <- c("1","24","28","34","38")
 tabla %>% 
-  kable(col.names = c("Residuales estudentizados", "Distancia Cook", "Valores $h_{ii}$", "Dffits"),caption = "Puntos de balanceo", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
+  kable(col.names = c("Residuales estudentizados" ,"Valores $h_{ii}$"),caption = "Puntos influenciales", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
   kable_styling(latex_options = c("HOLD_position"))
 
 ```
@@ -378,11 +377,10 @@ with(base.diagnostico,
 abline(h = Dffits.criterio, col="red", lty = "dashed")
 abline(h = -Dffits.criterio, col="red", lty = "dashed")
 
-tabla <- base.diagnostico[base.diagnostico$Dffits > Dffits.criterio | base.diagnostico$Dffits < -Dffits.criterio, ]
-
+tabla <- base.diagnostico[c(10,18,38),c(1,4)]
 rownames(tabla) <- c("10","18","38")
 tabla %>% 
-  kable(col.names = c("Residuales estudentizados", "Distancia Cook", "Valores $h_{ii}$", "Dffits"),caption = "Puntos influenciales", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
+  kable(col.names = c("Residuales estudentizados" ,"Dffits"),caption = "Puntos influenciales", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
   kable_styling(latex_options = c("HOLD_position"))
 
 ```
