@@ -361,7 +361,14 @@ with(base.diagnostico,
           main = "Gráfica de observaciones vs Dffits", pch = 20, ylim=c(-1.5, 1.5)))
 abline(h = Dffits.criterio, col="red", lty = "dashed")
 abline(h = -Dffits.criterio, col="red", lty = "dashed")
-base.diagnostico[base.diagnostico$Dffits > Dffits.criterio | base.diagnostico$Dffits < -Dffits.criterio, ]
+
+tabla <- base.diagnostico[base.diagnostico$Dffits > Dffits.criterio | base.diagnostico$Dffits < -Dffits.criterio, ]
+
+rownames(tabla) <- c("10","18","38")
+tabla %>% 
+  kable(col.names = c("Residuales estudentizados", "Distancia Cook", "Valores $h_{ii}$", "Dffits"),caption = "Puntos influenciales", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
+  kable_styling(latex_options = c("HOLD_position"))
+
 ```
 
 Interpretación...
