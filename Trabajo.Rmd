@@ -345,9 +345,14 @@ with(base.diagnostico,
      plot(hii.value, xlab="Observación", ylab = "Valor hii",
           main = "Gráfica de hii para las observaciones", pch = 20, ylim=c(-0.3, 0.5)))
 abline(h = hii.criterio, col="red", lty = "dashed")
-```
-```{r include = F}
-base.diagnostico[base.diagnostico$hii.value > hii.criterio, ]
+
+tabla <- base.diagnostico[base.diagnostico$hii.value > hii.criterio, ]
+
+rownames(tabla) <- c("1","24","28","34","38")
+tabla %>% 
+  kable(col.names = c("Residuales estudentizados", "Distancia Cook", "Valores $h_{ii}$", "Dffits"),caption = "Puntos de balanceo", escape=F, booktab=T, align = "c", row.names = T, digits = 4) %>% 
+  kable_styling(latex_options = c("HOLD_position"))
+
 ```
 
 Analizando la gráfica, concluimos que tenemos 5 puntos de balanceo (los dos que están exactamente en la linea son menores al valor $h_{ii} = 2\frac{p}{n}= 2\frac{6}{65} =0.1846$ que representa la linea punteada roja). Las 5 observaciones 1,24,28,34 y 38 ,como se muestra en la tabla, cumplen con el criterio correspondiente $h_{ii} > 2\frac{p}{n}$
