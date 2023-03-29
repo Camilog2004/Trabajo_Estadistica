@@ -287,7 +287,7 @@ myQQnorm(modelo, xlab = "Cuantiles teóricos",
          ylab = "Cuantiles muestrales", pch=20)
 ```
 
-Analizando en un principio el valor-P de la prueba Shapiro-Wilk utilizando un nivel de significancia $\alpha = 0.05$, podemos observar que este valor-P es superior pues $0.9591 > 0.05$, por lo que no se cumple el criterio de rechazo, no rechazaríamos la hipótesis nula y se cumpliría el supuesto de normalidad. No obstante, en la gráfica de cuantiles...
+Analizando en un principio el valor-P de la prueba Shapiro-Wilk utilizando un nivel de significancia $\alpha = 0.05$, podemos observar que este valor-P es superior pues $0.9591 > 0.05$, por lo que no se cumple el criterio de rechazo, no rechazaríamos la hipótesis nula y se cumpliría el supuesto de normalidad. No obstante, en la gráfica de cuantiles podemos ver que en las colas, hay bastantes datos que no se alinean a la linea punteada roja, por lo que, dandole más peso a la prueba gráfica se rechaza el cumplimiento del supuesto.
 
 \subsubsection{Varianza constante}
 
@@ -310,7 +310,7 @@ plot(yhat, res.stud, xlab = "Valores Ajustados",
 abline(h = 0, lty = 2, lwd = 2, col = 2)
 ```
 
-Del análisis de la gráfica encontramos que el patrón de los puntos indica un aumento de la dispersión hasta poco antes del centro de la gráfica y después hay un decrecimiento de la dispersión. En base a esto podemos concluir que el supuesto de varianza constante no se cumple. Es posible que algunas observaciones extremas estén afectando nuestro análisis.
+Del análisis de la gráfica encontramos que el patrón de los puntos indica un aumento de la dispersión hasta poco antes del centro de la gráfica y después hay un decrecimiento de la dispersión. Si nos paramos en puntos de las x vemos que en algunos hay diferentes amplitudes. En base a esto podemos concluir que el supuesto de varianza constante no se cumple. Es posible que algunas observaciones extremas estén afectando nuestro análisis.
 
 \subsection{Verificación de las observaciones}
 
@@ -335,7 +335,8 @@ abline(h =- 3, col="red", lty = "dashed")
 atipicos.criterio <- 3
 base.diagnostico[base.diagnostico$res.stud > atipicos.criterio | base.diagnostico$res.stud < -atipicos.criterio, ]
 ```
-Tal como nos los muestra la gráfica anterior, no se observa ningún dato atípico en el conjunto de datos que tenemos, esto porque ningún residual estudentizado sobrepasa el criterio correspondiente $|r_{estudentizados}| > 3$.
+
+Las observaciones atípicas son aquellas que se encuentran separadas del resto de las observaciones(En el espacio de las $Y$) y y por tanto puede afectar los resultados del ajuste del modelo de regresión .Tal como nos los muestra la gráfica anterior, no se observa ningún dato atípico en el conjunto de datos que tenemos, esto porque ningún residual estudentizado sobrepasa el criterio correspondiente $|r_{estudentizados}| > 3$.
 
 \subsubsection{Puntos de balanceo}
 
@@ -354,7 +355,8 @@ tabla %>%
   kable_styling(latex_options = c("HOLD_position"))
 ```
 
-Analizando la gráfica, concluimos que tenemos 5 puntos de balanceo (los dos que están exactamente en la linea son menores al valor $h_{ii} = 2\frac{p}{n}= 2\frac{6}{65} =0.1846$ que representa la linea punteada roja). Las 5 observaciones 1,24,28,34 y 38 ,como se muestra en la tabla, cumplen con el criterio correspondiente $h_{ii} > 2\frac{p}{n}$
+Analizando la gráfica, concluimos que tenemos 5 puntos de balanceo (los dos que están exactamente en la linea son menores al valor $h_{ii} = 2\frac{p}{n}= 2\frac{6}{65} =0.1846$ que representa la linea punteada roja). Las 5 observaciones 1,24,28,34 y 38 ,como se muestra en la tabla, cumplen con el criterio correspondiente $h_{ii} > 2\frac{p}{n}$. 
+Dichos puntos representan observaciones en el espacio de las predictoras, alejadas del resto de la muestra, por lo que pueden controlar ciertas propiedades de nuestro modelo ajustado. Posiblemente puedan afectar el $R^2$ y los errores estándar de los coeficientes estimados.
 
 \subsubsection{Puntos  influenciales}
 
@@ -367,7 +369,8 @@ abline(h = criterio.cook, col="red", lty = "dashed")
 #base.diagnostico[base.diagnostico$Cooks.D > criterio.cook, ]
 ```
 
-Con el criterio Cook que nos indica que para que sea un punto influencial $D_{i} > 1$, observamos que ningun punto cumple, tal cual como se ve en la gráfica ya que ninguno sobrepasa la linea roja punteada.
+Los observaciones influenciales son aquellas que tienen un impacto notable sobre
+los coeficientes de regresión ajustados. Con el criterio Cook que nos indica que para que sea un punto influencial $D_{i} > 1$, observamos que ningun punto cumple, tal cual como se ve en la gráfica ya que ninguno sobrepasa la linea roja punteada.
 
 ```{r fig.cap="Criterio Dffits para puntos influenciales"}
 Dffits.criterio <- 2* (6/nrow(datos))^(1/2)
@@ -387,6 +390,6 @@ tabla %>%
 
 ```
 
-Tal como nos lo muestra la gráfica y la tabla, tenemos 3 puntos influenciales que cumplen el criterio del diágnostico DFFITS el cual establece que es un punto influencial si $|D_{ffit}| > 2\sqrt{\frac{p}{n}}$, para este conjunto de datos en particular $|D_{ffit}| > 2\sqrt{\frac{6}{56}}= 0.6076$.
+Tal como nos lo muestra la gráfica y la tabla, tenemos 3 puntos influenciales que cumplen el criterio del diágnostico DFFITS el cual establece que es un punto influencial si $|D_{ffit}| > 2\sqrt{\frac{p}{n}}$, para este conjunto de datos en particular $|D_{ffit}| > 2\sqrt{\frac{6}{56}}= 0.6076$. Teniendo en cuenta la definición de punto influencial podemos decir que la exclusión de alguno de dichos puntos del modelo puede causar cambios importantes en la ecuación de regresión ajustada.
 
 \subsection{Conclusión}
