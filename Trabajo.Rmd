@@ -293,6 +293,15 @@ Analizando en un principio el valor-P de la prueba Shapiro-Wilk utilizando un ni
 
 Para validar el supuesto de varianza constante analizaremos el gráfico de los residuales estudentizados vs los valores ajustados:
 
+$$
+\begin{cases}
+\begin{aligned}
+  \text{H}_0&: V[\varepsilon_i] = \sigma^2\\
+  \text{H}_1&:  V[\varepsilon_i] \neq \sigma^2
+\end{aligned}
+\end{cases}
+$$
+
 ```{r fig.cap = "Gráfico residuales estudentizados vs valores ajustados"}
 res.stud <- round(rstandard(modelo), 4)
 yhat <- round(modelo$fitted.values, 4)
@@ -301,7 +310,7 @@ plot(yhat, res.stud, xlab = "Valores Ajustados",
 abline(h = 0, lty = 2, lwd = 2, col = 2)
 ```
 
-Interpretación...
+Del análisis de la gráfica encontramos que el patrón de los puntos indica un aumento de la dispersión hasta poco antes del centro de la gráfica y después hay un decrecimiento de la dispersión. En base a esto podemos concluir que el supuesto de varianza constante no se cumple. Es posible que algunas observaciones extremas estén afectando nuestro análisis.
 
 \subsection{Verificación de las observaciones}
 
@@ -326,7 +335,7 @@ abline(h =- 3, col="red", lty = "dashed")
 atipicos.criterio <- 3
 base.diagnostico[base.diagnostico$res.stud > atipicos.criterio | base.diagnostico$res.stud < -atipicos.criterio, ]
 ```
-Tal como nos los muestra la gráfica anterior, no se observa ningún dato atípico en el conjunto de datos que tenemos, esto porque ningún residual estudentizado sobrepasa el criterio correspondiente $|r_{estud}| > 3$.
+Tal como nos los muestra la gráfica anterior, no se observa ningún dato atípico en el conjunto de datos que tenemos, esto porque ningún residual estudentizado sobrepasa el criterio correspondiente $|r_{estudentizados}| > 3$.
 
 \subsubsection{Puntos de balanceo}
 
@@ -334,14 +343,14 @@ Tal como nos los muestra la gráfica anterior, no se observa ningún dato atípi
 hii.criterio <- 2*(6/(nrow(datos)))
 with(base.diagnostico,
      plot(hii.value, xlab="Observación", ylab = "Valor hii",
-          main = "Gráfica de hii para las observaciones", pch = 20, ylim=c(-0.3, 0.3)))
+          main = "Gráfica de hii para las observaciones", pch = 20, ylim=c(-0.3, 0.5)))
 abline(h = hii.criterio, col="red", lty = "dashed")
 ```
 ```{r include = F}
 base.diagnostico[base.diagnostico$hii.value > hii.criterio, ]
 ```
 
-Interpreación...
+Analizando la gráfica, concluimos que tenemos 5 puntos de balanceo (los dos que están exactamente en la linea son menores al valor $h_{ii} = 2\frac{p}{n}= 2\frac{6}{65} =0.1846$ que representa la linea punteada roja). Las 5 observaciones 1,24,28,34 y 38 ,como se muestra en la tabla, cumplen con el criterio correspondiente $h_{ii} > 2\frac{p}{n}$
 
 \subsubsection{Puntos  influenciales}
 
@@ -353,6 +362,8 @@ with(base.diagnostico,
 abline(h = criterio.cook, col="red", lty = "dashed")
 #base.diagnostico[base.diagnostico$Cooks.D > criterio.cook, ]
 ```
+
+Con el criterio Cook que nos indica que para que sea un punto influencial $D_{i} > 1$, observamos que ningun punto cumple, tal cual como se ve en la gráfica ya que ninguno sobrepasa la linea roja punteada.
 
 ```{r fig.cap="Criterio Dffits para puntos influenciales"}
 Dffits.criterio <- 2* (6/nrow(datos))^(1/2)
@@ -371,6 +382,6 @@ tabla %>%
 
 ```
 
-Interpretación...
+Tal como nos lo muestra la gráfica y la tabla, tenemos 3 puntos influenciales que cumplen el criterio del diágnostico DFFITS el cual establece que es un punto influencial si $|D_{ffit}| > 2\sqrt{\frac{p}{n}}$, para este conjunto de datos en particular $|D_{ffit}| > 2\sqrt{\frac{6}{56}}= 0.6076$.
 
 \subsection{Conclusión}
