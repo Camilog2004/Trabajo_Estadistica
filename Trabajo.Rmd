@@ -146,9 +146,9 @@ Usando el criterio de rechazo del valor-P $\alpha > Val-P$ determinaremos que va
 
 \subsection{Interpretación de los parámetros}
 
-\textbf{$\hat{\beta_3}$:} Significa que por cada unidad que aumente $X_{3}$ la variable respuesta estimada $\hat{Y}_i$ aumenta en 0.0628 unidades cuando las demas variables se mantienen constantes, esto en otras palabras es que a medida que hayan mas camas mas aumenta la riesgo de infeccion.
+\textbf{$\hat{\beta_3}$:} Significa que por cada unidad que aumente $X_{3}$ el promedio en el riesgo de infección aumenta en 0.0628 unidades cuando las demas variables se mantienen constantes, esto en otras palabras es que a medida que hayan mas camas mas aumenta el riesgo de infeccion.
 
-\textbf{$\hat{\beta_5}$:} Significa que por cada unidad que aumente $X_{5}$ la variable respuesta estimada $\hat{Y}_i$ aumenta en 0.0024 unidades cuando las demas variables se mantienen constantes, aqui nos dice que segun el aumento de la cantidad de enfermeras aumenta el riesgo de infeccion.
+\textbf{$\hat{\beta_5}$:} Significa que por cada unidad que aumente $X_{5}$ el promedio en el riesgo de infección aumenta en 0.0024 unidades cuando las demas variables se mantienen constantes, aqui nos dice que segun el aumento de la cantidad de enfermeras aumenta el riesgo de infeccion.
 
 \subsection{Coeficiente de determinación múltiple $R^2$}
 
@@ -310,7 +310,7 @@ plot(yhat, res.stud, xlab = "Valores Ajustados",
 abline(h = 0, lty = 2, lwd = 2, col = 2)
 ```
 
-Del análisis de la gráfica encontramos que el patrón de los puntos indica un aumento de la dispersión hasta poco antes del centro de la gráfica y después hay un decrecimiento de la dispersión. Si nos paramos en puntos de las x vemos que en algunos hay diferentes amplitudes. En base a esto podemos concluir que el supuesto de varianza constante no se cumple. Es posible que algunas observaciones extremas estén afectando nuestro análisis.
+Del análisis de la gráfica encontramos que el patrón de los puntos indica un aumento de la dispersión hasta poco antes del centro de la gráfica y después hay un decrecimiento de la dispersión. Si nos paramos en puntos de las x vemos que en algunos hay diferentes amplitudes en la nube de puntos. En base a esto podemos concluir que el supuesto de varianza constante no se cumple. Es posible que algunas observaciones extremas estén afectando nuestro análisis.
 
 \subsection{Verificación de las observaciones}
 
