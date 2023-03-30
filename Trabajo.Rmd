@@ -193,9 +193,10 @@ F_0 &= \frac{(SSE(\beta_0, \beta_3, \beta_5) - SSE(\beta_0, \ \cdots, \ \beta_5)
 \end{split}
 \end{equation}
 
-Si se compara el $F_0$ con $f_{0.95, 3, `r nrow(datos)-6`} = `r round(qf(0.95, 3, nrow(datos)-6), 4)`$, se puede ver que $F_0 > f_{0.95, 3, 59}$.
 
-Usando $\alpha = 0.05$:
+Usando una significancia de $\alpha = 0.05$:
+
+Si se compara el $F_0$ con $f_{0.95, 3, `r nrow(datos)-6`} = `r round(qf(0.95, 3, nrow(datos)-6), 4)`$, se puede ver que $F_0 > f_{0.95, 3, 59}$.
 
 Como $F_0 > f_{0.95, 3, 59}$, entonces se rechaza $H_0$, por lo tanto, el subconjunto es significativo, en presencia de los demás parámetros.
 
@@ -355,7 +356,7 @@ tabla %>%
   kable_styling(latex_options = c("HOLD_position"))
 ```
 
-Analizando la gráfica, concluimos que tenemos 5 puntos de balanceo (los dos que están exactamente en la linea son menores al valor $h_{ii} = 2\frac{p}{n}= 2\frac{6}{65} =0.1846$ que representa la linea punteada roja). Las 5 observaciones 1,24,28,34 y 38 ,como se muestra en la tabla, cumplen con el criterio correspondiente $h_{ii} > 2\frac{p}{n}$. 
+Analizando la gráfica, concluimos que tenemos 5 puntos de balanceo (los dos que están exactamente en la linea son menores al valor $h_{ii} = 2\frac{p}{n}= 2\frac{6}{65} =0.1846$ que representa la linea punteada roja). Las 5 observaciones 1, 24, 28, 34 y 38 ,como se muestra en la tabla, cumplen con el criterio correspondiente $h_{ii} > 2\frac{p}{n}$. 
 Dichos puntos representan observaciones en el espacio de las predictoras, alejadas del resto de la muestra, por lo que pueden controlar ciertas propiedades de nuestro modelo ajustado. Posiblemente puedan afectar el $R^2$ y los errores estándar de los coeficientes estimados.
 
 \subsubsection{Puntos  influenciales}
@@ -390,6 +391,12 @@ tabla %>%
 
 ```
 
-Tal como nos lo muestra la gráfica y la tabla, tenemos 3 puntos influenciales que cumplen el criterio del diágnostico DFFITS el cual establece que es un punto influencial si $|D_{ffit}| > 2\sqrt{\frac{p}{n}}$, para este conjunto de datos en particular $|D_{ffit}| > 2\sqrt{\frac{6}{56}}= 0.6076$. Teniendo en cuenta la definición de punto influencial podemos decir que la exclusión de alguno de dichos puntos del modelo puede causar cambios importantes en la ecuación de regresión ajustada.
+Tal como nos lo muestra la gráfica y la tabla, tenemos 3 puntos influenciales, provenientes de la observación 10, 18 y 38, que cumplen el criterio del diágnostico DFFITS el cual establece que es un punto influencial si $|D_{ffit}| > 2\sqrt{\frac{p}{n}}$, para este conjunto de datos en particular $|D_{ffit}| > 2\sqrt{\frac{6}{56}}= 0.6076$. Teniendo en cuenta la definición de punto influencial podemos decir que la exclusión de alguno de dichos puntos del modelo puede causar cambios importantes en la ecuación de regresión ajustada.
 
 \subsection{Conclusión}
+
+Se llega a la conclusión que el modelo propuesto no es válido, pues no se cumple el supuesto que indica que los errores se distribuyen normal, y tampoco se cumple el supuesto de los errores con varianza constante. 
+
+Por esta razón, es inviable hablar de linealidad tal y como se presentaron los datos, a pesar de que los demás supuestos si tuvieron validez (errores con media cero y errores mutuamente independientes).
+
+Es importante recalcar la posibilidad de que los puntos de balanceo e influenciales mostrados anteriormente estén afectando en la validación de los supuestos. Por consiguiente, es necesario analizar estas observaciones individualmente, y realizar el análisis respectivo que permita explicar el por qué ocurrieron. 
