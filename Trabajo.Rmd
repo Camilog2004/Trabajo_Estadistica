@@ -146,9 +146,9 @@ Usando el criterio de rechazo del valor-P $\alpha > Val-P$ determinaremos que va
 
 \subsection{Interpretación de los parámetros}
 
-\textbf{$\hat{\beta_3}$:} Significa que por cada unidad que aumente $X_{3}$ el promedio en el riesgo de infección aumenta en 0.0628 unidades cuando las demas variables se mantienen constantes, esto en otras palabras es que a medida que hayan mas camas mas aumenta el riesgo de infeccion.
+\textbf{$\hat{\beta_3}$:} Significa que por cada unidad que aumente $X_{3}$ el promedio en el riesgo de infección aumenta en 0.0628 unidades cuando las demas variables se mantienen constantes, esto en otras palabras es que a medida que hayan mas camas mas aumenta la media del riesgo de infeccion.
 
-\textbf{$\hat{\beta_5}$:} Significa que por cada unidad que aumente $X_{5}$ el promedio en el riesgo de infección aumenta en 0.0024 unidades cuando las demas variables se mantienen constantes, aqui nos dice que segun el aumento de la cantidad de enfermeras aumenta el riesgo de infeccion.
+\textbf{$\hat{\beta_5}$:} Significa que por cada unidad que aumente $X_{5}$ el promedio en el riesgo de infección aumenta en 0.0024 unidades cuando las demas variables se mantienen constantes, aqui nos dice que segun el aumento de la cantidad de enfermeras aumenta la media del riesgo de infeccion.
 
 \subsection{Coeficiente de determinación múltiple $R^2$}
 
